@@ -1,5 +1,5 @@
 
-import { success } from "zod"
+
 import { fitnessProfile } from "../db/model/fitnessProfile.js"
 
 export const profileFectch=async(req,res)=>{
