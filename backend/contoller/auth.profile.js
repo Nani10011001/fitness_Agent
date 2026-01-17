@@ -5,16 +5,26 @@ import { fitnessProfile } from "../db/model/fitnessProfile.js"
 export const auth_profile=async(req,res)=>{
     try {
         const userId=req.userId
-        console.log(userId)
-        let {height,weight,age,gender,goal,workoutDays,dietPreference}=req.body
+      
+        let {name,height,weight,age,gender,goal,workoutDays,dietPreference}=req.body
 
-     if(! height|| !weight|| !age || !gender || !goal || !workoutDays || !dietPreference)
-{
+     if(!name||! height|| !weight|| !age || !gender || !goal || !workoutDays || !dietPreference)
+        {
+
     return res.status(400).json({
         success:false,
         message:"all fields are required"
     })
+
+
 }
+    if(name<3&&name>20)
+        {
+        return res.json({
+            success:false,
+            message:"Name is too long or too low"
+        })
+    }
 if(height<=50){
     return res.status(400).json({
         success:false,
@@ -36,6 +46,7 @@ if(age<=2){
 }
 const profile=await fitnessProfile.create({
     userId:userId,
+    name,
     height:height,
     weight:weight,
     age:age,

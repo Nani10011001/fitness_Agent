@@ -7,6 +7,9 @@ import Signup from './components/Authication/Signup'
 import  {Toaster}  from 'react-hot-toast'
 import Profile from './components/Authication/Profile'
 import Fitness_Agent from './pages/Fitness_Agent'
+import Dashboard_page from './components/Dashboard/Dashboard_page.jsx'
+import userProgress from './components/Dashboard/Progress_details.jsx'
+import Profile_edit from './components/Dashboard/Profile_edit.jsx'
 
 const App = () => {
   return (
@@ -20,6 +23,9 @@ const App = () => {
   <Route path='/login' element={<Login/>}/>
   <Route path="/profile" element={<Profile/>}/>
   <Route path="/Agent/ui" element={<Fitness_Agent/>}/>
+  <Route  path='/dashboard' element={<Dashboard_page/>}/>
+  <Route index  path="/profile/edit" element={<Profile_edit/>}/>
+  <Route path='progress' element={<userProgress/>}/>
 </Routes>
       <Toaster/>
       

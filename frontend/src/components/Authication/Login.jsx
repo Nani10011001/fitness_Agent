@@ -19,6 +19,7 @@ console.log(data)
 if(data.success){
   toast.success(data.message)
   navigate("/profile")
+localStorage.setItem("token",data.userIdentification)
 }else{
   toast.error(data.message)
 }

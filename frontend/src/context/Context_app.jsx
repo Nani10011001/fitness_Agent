@@ -6,6 +6,7 @@ axios.defaults.baseURL= import.meta.env.VITE_BASE_URL
  const AppContext=createContext()
 const Context_app = ({children}) => {
    const navigate=useNavigate()
+   
    const value={
     navigate,
     axios

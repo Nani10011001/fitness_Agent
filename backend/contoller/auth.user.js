@@ -59,6 +59,8 @@ export const Login=async(req,res)=>{
       })
     }
     const user=await User.findOne({email})
+    const userid=user._id
+
     if(!user){
       return  res.status(400).json({
         success:false,
@@ -74,7 +76,8 @@ export const Login=async(req,res)=>{
     }
     return res.status(201).json({
       success:true,
-      message:"login successfull"
+      message:"login successfull",
+      userIdentification:userid
     })
   } catch (error) {
     console.error(error)

@@ -1,4 +1,5 @@
 import { success } from "zod"
+//temory purpose thing
 import { searchMemory } from "../../MemConfig/sementicsearch.js"
 
 export const memorySearching_db=async(req,res)=>{

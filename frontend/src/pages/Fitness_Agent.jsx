@@ -10,6 +10,7 @@ const Fitness_Agent = () => {
   const [message,setMessage]=useState([])
   const [input,settInput]=useState("")
   const [streamingText,setStreamingText]=useState("")
+  const userIdtoken=localStorage.getItem('token')
 const {navigate}=useAppContext()
   const handelInput=async()=>{
 
@@ -19,10 +20,7 @@ const {navigate}=useAppContext()
         role:"user",
         text:input
       }
-        const payload={
-        userId:"nani123",
-        content:userMessage.text
-      }
+        
         
        setMessage((prev)=>[
         ...prev,userMessage
@@ -35,7 +33,7 @@ const {navigate}=useAppContext()
 
       
       body:JSON.stringify({
-        userId:"nani123",
+        userId:userIdtoken,
         content:userMessage.text
       })
     })
@@ -88,7 +86,7 @@ console.log("decoder_data:",decoder)
   <div>  <h3 className='px-3'>previous Days</h3></div>
   <div className=''></div>
    </div>
-   <div className='absolute bottom-0 px-3 mb-10'> <button className='flex cursor-pointer gap-1 '><User/>profile</button></div>
+   <div className='absolute bottom-0 px-3 mb-10'> <button onClick={()=>navigate('/')} className='flex cursor-pointer gap-1 '><User/>profile</button></div>
 </div>
       
 <div className='flex flex-col w-full bg-slate-800 '>
@@ -122,16 +120,23 @@ console.log("decoder_data:",decoder)
         }
       `}
     >
-      {msg.text}
+      {msg.role === "ai" ? (
+        <ReactMarkdown>{msg.text}</ReactMarkdown>
+      ) : (
+        msg.text
+      )}
     </div>
   </div>
 ))}
 
 {streamingText && (
   <div className="flex my-2 justify-start">
-    <div className="relative bg-slate-800 px-4 py-2  max-w-[85%] text-white whitespace-pre-wrap">
-      {streamingText}
-      <span className="absolute ml-1 w-[2px] h-[1.2em] bg-white animate-blink" />
+    <div className="relative inline-block bg-slate-800 px-4 py-2  max-w-[85%] text-white whitespace-pre-wrap">
+ <ReactMarkdown>
+     {streamingText}
+     
+ </ReactMarkdown>
+  <span className="inline-block ml-1 w-[2px] h-[1.2em] bg-white animate-blink" />
     </div>
   </div>
 )}

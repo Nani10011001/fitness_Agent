@@ -1,20 +1,21 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import toast from "react-hot-toast"
-import {useNavigate} from "react-router-dom"
-axios.defaults.withCredentials = true;
-const Profile = () => {
-  const [name,setName]=useState('')
-    const [height,setHeight]=useState('')
-    const [weight,setWeight]=useState('')
-    const [age,setAge]=useState('')
-    const [gender,setGender]=useState("")
-    const [goal,setGoal]=useState("")
-    const [workoutDays,setWorkoutDay]=useState(3)
-    const [dietPreference,setDiet]=useState("")
-    const [isLoading,setIsLoading]=useState(false)
-    const navigate=useNavigate()
-    const GeneratPlanHander=async(e)=>{
+import React from 'react'
+import { useState } from 'react'
+import { useAppContext } from '../../context/Context_app'
+import toast from 'react-hot-toast'
+export default function Profile_edit() {
+const[profileLoading,setProfileLoading]=useState(false)
+const [isLoading,setIsLoading]=useState(false)
+  const[name,setName]=useState('')
+  const [height,setHeight]=useState('')
+     const [weight,setWeight]=useState('')
+     const [age,setAge]=useState('')
+     const [gender,setGender]=useState("")
+     const [goal,setGoal]=useState("")
+     const [workoutDays,setWorkoutDay]=useState(3)
+     const [dietPreference,setDiet]=useState("")
+const userId=localStorage.getItem("token")
+const {axios}=useAppContext()
+  const GeneratPlanHander=async(e)=>{
 e.preventDefault()
 /* if(!height || !weight|| !age || !gender || !goal || !workoutDay || !diet){
   toast.error("requires all the fields")
@@ -23,6 +24,7 @@ if(isLoading) return;
 setIsLoading(true)
 try {
   const payload={
+    userId,
     name,
   height: Number(height),
   weight: Number(weight),
@@ -35,7 +37,7 @@ try {
   const {data}= await axios.post("http://localhost:8080/auth/profile",payload)
   if(data.success){
     toast.success(data.message)
-    navigate("/Agent/ui")
+  
   }
   else{
     toast.error(data.message)
@@ -46,13 +48,35 @@ try {
 }
     }
 
+
+  const fetchProfile=async()=>{
+const userToken=localStorage.getItem("token")
+
+    try {
+const {data}=await axios.post("/api/user/profile",{userId:userToken})
+console.log(data)
+setName(data.details.name)
+setHeight(data.details.height)
+setWeight(data.details.weight)
+setAge(data.details.age)
+
+setGender(data.details.gender)
+setGoal(data.details.goal)
+setDiet(data.details.dietPreference)
+setWorkoutDay(data.details.workoutDays)
+
+      console.log(data.name)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
-    <div className='bg-primary/80 min-h-screen flex flex-col items-center  '>
+  <div className='bg-primary/80 min-h-screen flex flex-col items-center  '>
            <div className='mt-10' >   <h3 className='text-white uppercase text-4xl font-semibold'>complete your profile</h3>
         <p className='text-gray-400 text-center'>Help us personalize your fitness jounery</p></div>
       <div  className='bg-slate-700 mt-5 shadow-gray-400 shadow-md px-2 h-[400px] w-[900px] rounded-lg '>
 
-      <form action="" onSubmit={GeneratPlanHander}className='w-full gap-2 grid lg:grid-cols-3 mt-7 gap-2'>
+      <form action="" className='w-full gap-2 grid lg:grid-cols-3 mt-7 gap-2'>
        <input type='text'
        placeholder='Enter your Name'
        value={name}
@@ -70,7 +94,7 @@ rounded-2xl px-3 placeholder:text-gray-300 outline-none my-4'
           setHeight(value)
         }
 
-       }}
+}}
 className=' py-4 text-white bg-slate-600 bg-gray-200 
 rounded-2xl px-3 placeholder:text-gray-300 outline-none my-4' />
     
@@ -141,7 +165,7 @@ rounded-2xl px-3 placeholder:text-gray-300 outline-none my-4'>
               <option value="Fat_loss">Fat Loss</option>
 <option value="Muscle_gain">Muscle_gain</option>
 <option value="Maintenance">Maintenance</option>
-<option value="Recomposition">Recomposition</option>
+<option value="Recompostion">Recompostion</option>
 
             </select>
         
@@ -184,19 +208,27 @@ rounded-2xl px-3 placeholder:text-gray-300 outline-none my-4'>
          </div>
  
       </div>
-    <div className='text-white flex justify-center  mt-24'>
-  <button disabled={isLoading}
-  type='submit' 
-  className='bg-blue-500 px-6 rounded-md font-medium hover:bg-blue-600 transition-all py-2'>{
-    isLoading?"Generating...":"Generate my plan"
-    }</button>
-  </div>
+   
    
       </form>
-        
+         <div className='text-white flex gap-3 justify-center  mt-6'>
+  <button disabled={isLoading}
+  
+  onClick={GeneratPlanHander}
+  className='bg-blue-500 px-6 rounded-md font-medium hover:bg-blue-600 transition-all py-2'>{
+    isLoading?"Updating...":"Update"
+    }</button>
+    <div>
+      <button
+      onClick={fetchProfile}
+  
+       className='bg-blue-500 px-6 rounded-md font-medium hover:bg-blue-600 transition-all py-2'>Edit
+       
+</button>
+    </div>
+  </div>
        </div>
    
     </div>)
+  
 }
-
-export default Profile

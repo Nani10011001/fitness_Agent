@@ -21,7 +21,7 @@ const AgentMemorySchema=new mongoose.Schema({
             "feedback",
             "pain",
             "goal_update",
-            "general"],
+            "general","emotion"],
         default:"general"
     },
     importance:{
@@ -29,6 +29,12 @@ const AgentMemorySchema=new mongoose.Schema({
         required:true,
         default:0.5
     },
+   
+    lastAccessedAt:Date,
+    createdAt:{
+        type:Date,
+        default:Date.now
+    }
 
 },{timestamps:true})
 export const AgentMemory=mongoose.model(

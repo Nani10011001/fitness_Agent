@@ -8,6 +8,12 @@ ref:"Userauth",
 require:true,
 unique:true
     },
+    name:{
+type:String,
+required:true,
+min:3,
+max:20
+    },
     height:{
         type:Number,
         required:true,
@@ -50,8 +56,9 @@ max:[1000,"weight to high"]
     },
     
 },{
-    timestamps:true
-},{
-    collection:"fitnessprofile"
-})
+    timestamps:true,
+    collection:"fitnessprofiles"
+}
+    
+)
 export const fitnessProfile=mongoose.model("fitnessProfile",profileSchema)

@@ -16,7 +16,7 @@ def profile_fetch_memory(userId:str)->list:
         memories=data.get("details",{})
         #print("profile_memories: ",memories)
         result=[]
-        
+        result.append(f"Name:{memories.get("name")}")
         result.append(f"Age: {memories.get('age')}")
         result.append(f"Gender: {memories.get('gender')}")
         result.append(f"Height: {memories.get('height')} cm")
